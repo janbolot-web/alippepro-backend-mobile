@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import userModel from "../models/user-model.js";
 import UserDto from "../dtos/user.dto.js";
 import roleModel from "../models/role-model.js";
+import UserDtoMob from "../dtos/userMob.dto.js";
 
 // Метод для начала процесса верификации
 let verificationCodes = {};
@@ -57,6 +58,7 @@ export const verifyCode = async (req, res) => {
     if (existingUser) {
       // Пользователь уже зарегистрирован, отправьте сообщение об этом
       const UserData = new UserDto(existingUser);
+      // console.log("DTo", UserData);
       return res.json({
         success: true,
         data: UserData,
@@ -87,9 +89,11 @@ export const verifyCode = async (req, res) => {
       { expiresIn: "30d" }
     );
     // Ответ об успешной верификации
+    const userData = new UserDto(user);
+    console.log(userData);
     res.json({
       success: true,
-      data: user,
+      data: userData,
       message: "Номер успешно подтвержден!",
     });
   } catch (error) {
@@ -102,19 +106,22 @@ export const verifyCode = async (req, res) => {
 export const setUserData = async (req, res) => {
   try {
     const name = req.body.name;
-    console.log(name);
+    console.log(req.body);
     const updateData = {
       $set: {
         name: name,
       },
     };
+
     const user = await userModel.findByIdAndUpdate(
       req.query.userId,
       updateData,
       { new: true }
     );
+    const userData = new UserDto(user);
+    console.log("DTO", userData);
     console.log("Документ успешно обновлен:", user);
-    res.json({ user, message: "Вы успешно авторизовались!" });
+    res.json({ userData, message: "Вы успешно авторизовались!" });
   } catch (error) {
     console.log(error);
   }
@@ -358,6 +365,7 @@ export const searchUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
     await userModel.findByIdAndDelete({ _id: id });
     res.json({ message: "Пользователь успешно удален" });
   } catch (error) {
