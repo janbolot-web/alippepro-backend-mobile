@@ -11,8 +11,8 @@ router.post("/auth/verify-code", UserController.verifyCode);
 router.patch("/auth/update-data", UserController.setUserData);
 router.post("/auth/register", UserController.register);
 router.post("/auth/login", UserController.login);
-router.get("/auth/me",  UserController.getMe);
-router.get("/auth/getMe",  UserController.getMeMobile);
+router.get("/auth/me", UserController.getMe);
+router.get("/auth/getMe", UserController.getMeMobile);
 router.get("/getUsers", roleMiddleware(["ADMIN"]), UserController.getUsers);
 // router.patch("/getUsersTest", UserController.getUsersTest);
 router.get("/getUserById/:id", UserController.getUserById);
@@ -48,5 +48,6 @@ router.patch(
   CourseController.createModule
 );
 router.patch("/addCourseToUser", CourseController.addCourseToUser);
+router.get("/getVersion", CourseController.getVersion);
 
 export default router;

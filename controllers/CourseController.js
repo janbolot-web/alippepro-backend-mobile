@@ -8,6 +8,17 @@ import userModel from "../models/user-model.js";
 import userCoursesModel from "../models/userCourses-model.js";
 import { StoryDto } from "../dtos/stories.dto.js";
 import storyModel from "../models/story-model.js";
+import versionModel from "../models/version-model.js";
+
+export const getVersion = async (req, res) => {
+  try {
+    const versions = await versionModel.find();
+    console.log(versions);
+    res.json(versions[0]);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export const createCourse = async (req, res) => {
   try {
