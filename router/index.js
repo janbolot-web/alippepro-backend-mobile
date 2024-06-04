@@ -25,6 +25,7 @@ router.post(
   CourseController.createCourse
 );
 router.get("/getAllCourses", CourseController.getAllCourses);
+router.post("/searchCourse", CourseController.searchCourse);
 router.get("/getAllStories", CourseController.getAllStories);
 router.get("/getCourse/:id", CourseController.getCourse);
 router.get("/getLessons/:id", CourseController.getLessons);
@@ -49,5 +50,7 @@ router.patch(
 );
 router.patch("/addCourseToUser", CourseController.addCourseToUser);
 router.get("/getVersion", CourseController.getVersion);
+
+router.post("/fetchChatgpt", UserController.fetchChatgpt);
 
 export default router;

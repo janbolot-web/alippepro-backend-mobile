@@ -1,4 +1,4 @@
-import e from "express";
+import e, { json } from "express";
 import UserCourseDto, { CourseDto } from "../dtos/course.dto.js";
 import authorModel from "../models/author-model.js";
 import courseModel from "../models/course-model.js";
@@ -61,14 +61,37 @@ export const createCourse = async (req, res) => {
 export const getAllCourses = async (req, res) => {
   try {
     const courses = await courseModel.find();
-    console.log("courses" + courses);
+    // console.log("courses" + courses);
     const coursesData = CourseDto(courses);
-    console.log("coursesData " + coursesData);
+    console.log("coursesData " + JSON.stringify(coursesData[0]));
 
     res.json(coursesData);
   } catch (error) {
     console.log(error);
     res.status(404).json({ message: "Не удалось получить все курсы" });
+  }
+};
+
+export const searchCourse = async (req, res) => {
+  console.log(req.body);
+  const { key } = req.body;
+  if (!key) {
+    return res.status(400).json({ error: "Search key is required" });
+  }
+
+  try {
+    const courses = await courseModel.find({
+      $or: [{ title: { $regex: key, $options: "i" } }],
+    });
+
+    if (courses.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+    console.log(courses);
+    res.json(courses);
+  } catch (error) {
+    console.error("Error while searching for users:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

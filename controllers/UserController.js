@@ -1,10 +1,12 @@
-import expressValidate from "express-validator";
+import expressValidate, { body, header } from "express-validator";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import userModel from "../models/user-model.js";
 import UserDto from "../dtos/user.dto.js";
 import roleModel from "../models/role-model.js";
 import UserDtoMob from "../dtos/userMob.dto.js";
+import axios from "axios";
+import OpenAI from "openai";
 
 // Метод для начала процесса верификации
 let verificationCodes = {};
@@ -374,6 +376,43 @@ export const deleteUser = async (req, res) => {
   }
 };
 
+export const fetchChatgpt = async (req, res) => {
+  console.log('ok')
+  try {
+    const data = req.body.response;
+    console.log(data);
+
+    const prompt = {
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "user",
+          content: data,
+        },
+      ],
+    };
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPEN_AI}`,
+      },
+    };
+    const response = await axios
+      .post("https://api.openai.com/v1/chat/completions", prompt, config)
+      .then((response) => {
+        return response;
+      })
+      .catch((error) => {
+        console.error("Произошла ошибка:", error); // обработка ошибки
+      });
+    console.log(response.status);
+    res.json({ response: response.data.choices[0].message.content,statusCode:response.status });
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: "Не удалось удалить пользователья" });
+  }
+};
 // async function deleteUser(userId) {
 //   try {
 //     const result = await userModel.deleteOne({ _id: userId });

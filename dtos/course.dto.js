@@ -8,6 +8,7 @@ export const CourseDto = (courses) => {
       price: course.price,
       previewImgUrl: course.previewImgUrl,
       createdAt: course.createdAt,
+      bgImage: course.bgImage,
     };
     coursesData.push(courseData);
   });
