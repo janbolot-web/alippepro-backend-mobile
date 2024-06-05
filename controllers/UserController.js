@@ -380,14 +380,14 @@ export const fetchChatgpt = async (req, res) => {
   console.log('ok')
   try {
     const data = req.body.response;
-    console.log(data);
+    // console.log("!!!!!!!!!data",data);
 
     const prompt = {
       model: "gpt-4o",
       messages: [
         {
           role: "user",
-          content: data,
+          content:  data,
         },
       ],
     };
@@ -395,7 +395,7 @@ export const fetchChatgpt = async (req, res) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer sk-proj-F5m9pCY1ctngvvDYxKwQT3BlbkFJ52tmVXsvZCzm3uaWql4I`,
+        Authorization: `Bearer ${process.env.OPEN_AI}`,
       },
     };
     const response = await axios
@@ -406,7 +406,7 @@ export const fetchChatgpt = async (req, res) => {
       .catch((error) => {
         console.error("Произошла ошибка:", error); // обработка ошибки
       });
-    console.log(response.status);
+    console.log(`response ${process.env.OPEN_AI}`);
     res.json({ response: response.data.choices[0].message.content,statusCode:response.status });
   } catch (error) {
     console.log(error);
