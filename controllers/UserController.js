@@ -7,9 +7,10 @@ import roleModel from "../models/role-model.js";
 import UserDtoMob from "../dtos/userMob.dto.js";
 import axios from "axios";
 import OpenAI from "openai";
-
+import dotenv from "dotenv";
 // Метод для начала процесса верификации
 let verificationCodes = {};
+dotenv.config();
 
 // export const startVerification = async (req, res) => {
 //   try {
@@ -395,7 +396,7 @@ export const fetchChatgpt = async (req, res) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer sk-proj-Vy54WKgXHcfgWPxULQl7T3BlbkFJ1LshlQFYoxs2xu8EQbo9`,
+        Authorization: `Bearer ${process.env.OPEN_AI}`,
       },
     };
     const response = await axios
