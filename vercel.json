@@ -1,4 +1,10 @@
 {
+  "functions": {
+    "api/*.js": {
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  }
   "version": 2,
   "builds": [
     {
@@ -12,4 +18,5 @@
       "dest": "/"
     }
   ]
+  
 }
