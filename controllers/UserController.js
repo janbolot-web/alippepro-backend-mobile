@@ -395,7 +395,7 @@ export const fetchChatgpt = async (req, res) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.OPEN_AI}`,
+        Authorization: `Bearer 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`,
       },
     };
     const response = await axios
